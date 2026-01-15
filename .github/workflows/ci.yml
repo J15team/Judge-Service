@@ -3,12 +3,8 @@ name: CI
 on:
   push:
     branches: [main, develop]
-    paths:
-      - "judge-service/**"
   pull_request:
     branches: [main]
-    paths:
-      - "judge-service/**"
 
 jobs:
   test:
