@@ -1,0 +1,38 @@
+{
+  "family": "judge-service-dev",
+  "networkMode": "awsvpc",
+  "requiresCompatibilities": ["EC2"],
+  "cpu": "1024",
+  "memory": "2048",
+  "executionRoleArn": "arn:aws:iam::127214181395:role/ecsTaskExecutionRole",
+  "containerDefinitions": [
+    {
+      "name": "judge-service",
+      "image": "127214181395.dkr.ecr.ap-northeast-1.amazonaws.com/judge-service-dev:latest",
+      "essential": true,
+      "portMappings": [
+        {
+          "containerPort": 8081,
+          "protocol": "tcp"
+        }
+      ],
+      "environment": [
+        {"name": "PORT", "value": "8081"},
+        {"name": "DEFAULT_TIME_LIMIT", "value": "2000"},
+        {"name": "DEFAULT_MEMORY_LIMIT", "value": "256"},
+        {"name": "MAX_TIME_LIMIT", "value": "10000"},
+        {"name": "MAX_MEMORY_LIMIT", "value": "512"}
+      ],
+      "privileged": true,
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/judge-service-dev",
+          "awslogs-region": "ap-northeast-1",
+          "awslogs-stream-prefix": "ecs",
+          "awslogs-create-group": "true"
+        }
+      }
+    }
+  ]
+}

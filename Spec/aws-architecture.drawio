@@ -1,0 +1,106 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="Judge Service Architecture" id="judge-arch">
+    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        
+        <!-- VPC -->
+        <mxCell id="vpc" value="VPC (vpc-06697d3c25e917ebd)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#E8F5E9;strokeColor=#2E7D32;verticalAlign=top;fontStyle=1;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="50" y="50" width="1000" height="700" as="geometry" />
+        </mxCell>
+        
+        <!-- Public Subnet -->
+        <mxCell id="subnet" value="Public Subnet (10.0.1.0/24)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#E3F2FD;strokeColor=#1565C0;verticalAlign=top;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="80" y="100" width="940" height="620" as="geometry" />
+        </mxCell>
+        
+        <!-- Users -->
+        <mxCell id="users" value="Users" style="shape=actor;whiteSpace=wrap;html=1;fillColor=#FFF3E0;strokeColor=#E65100;" vertex="1" parent="1">
+          <mxGeometry x="120" y="200" width="60" height="80" as="geometry" />
+        </mxCell>
+        
+        <!-- API Gateway -->
+        <mxCell id="apigw" value="API Gateway" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FCE4EC;strokeColor=#C2185B;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="240" y="210" width="100" height="60" as="geometry" />
+        </mxCell>
+        
+        <!-- ECS Cluster -->
+        <mxCell id="cluster" value="ECS Cluster&#xa;(j15-backend-cluster-dev)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFF8E1;strokeColor=#FF8F00;verticalAlign=top;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="400" y="130" width="580" height="560" as="geometry" />
+        </mxCell>
+        
+        <!-- Main Backend (Fargate) -->
+        <mxCell id="backend" value="Main Backend&#xa;(Fargate)&#xa;Port: 8080" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E8EAF6;strokeColor=#3F51B5;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="440" y="200" width="140" height="80" as="geometry" />
+        </mxCell>
+        
+        <!-- EC2 Instance -->
+        <mxCell id="ec2" value="EC2 (t3.small)&#xa;ecs-judge-service-dev&#xa;i-090a993fda9fe3fb4" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFECB3;strokeColor=#FFA000;verticalAlign=top;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="640" y="180" width="300" height="280" as="geometry" />
+        </mxCell>
+        
+        <!-- Judge Service -->
+        <mxCell id="judge" value="Judge Service&#xa;(EC2 Launch Type)&#xa;Port: 8081" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E1F5FE;strokeColor=#0288D1;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="680" y="230" width="140" height="80" as="geometry" />
+        </mxCell>
+        
+        <!-- Docker in Docker -->
+        <mxCell id="dind" value="Docker-in-Docker&#xa;(Sandbox)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F3E5F5;strokeColor=#7B1FA2;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="680" y="340" width="140" height="60" as="geometry" />
+        </mxCell>
+        
+        <!-- Sandbox Container -->
+        <mxCell id="sandbox" value="judge-sandbox&#xa;(gcc, isolated)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFEBEE;strokeColor=#C62828;fontStyle=0;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="850" y="340" width="80" height="60" as="geometry" />
+        </mxCell>
+        
+        <!-- RDS -->
+        <mxCell id="rds" value="RDS PostgreSQL" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#E8F5E9;strokeColor=#388E3C;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="470" y="550" width="100" height="80" as="geometry" />
+        </mxCell>
+        
+        <!-- ECR -->
+        <mxCell id="ecr" value="ECR&#xa;judge-service-dev" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FBE9E7;strokeColor=#D84315;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="700" y="550" width="120" height="60" as="geometry" />
+        </mxCell>
+        
+        <!-- CloudWatch -->
+        <mxCell id="cw" value="CloudWatch Logs&#xa;/ecs/judge-service-dev" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E0F2F1;strokeColor=#00695C;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="850" y="550" width="120" height="60" as="geometry" />
+        </mxCell>
+        
+        <!-- Arrows -->
+        <mxCell id="arr1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;" edge="1" parent="1" source="users" target="apigw">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="arr2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;" edge="1" parent="1" source="apigw" target="backend">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="arr3" value="HTTP :8081" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#0288D1;" edge="1" parent="1" source="backend" target="judge">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="arr4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;" edge="1" parent="1" source="backend" target="rds">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="arr5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1;dashed=1;" edge="1" parent="1" source="judge" target="dind">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="arr6" value="spawn" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1;dashed=1;strokeColor=#7B1FA2;" edge="1" parent="1" source="dind" target="sandbox">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <!-- Security Group Label -->
+        <mxCell id="sg" value="SG: sg-0bcda1559b9fdde75&#xa;Inbound: 8080, 8081, 443" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=2;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="100" y="680" width="200" height="30" as="geometry" />
+        </mxCell>
+        
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
