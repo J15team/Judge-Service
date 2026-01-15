@@ -32,8 +32,11 @@ func NewDockerPoolSandbox(compileTimeout time.Duration, poolSize int) *DockerPoo
 		poolSize:       poolSize,
 	}
 	for i := 0; i < poolSize; i++ {
-		dir, _ := os.MkdirTemp("", fmt.Sprintf("judge-pool-%d-*", i))
-		os.Chmod(dir, 0777)
+		dir, err := os.MkdirTemp("", fmt.Sprintf("judge-pool-%d-*", i))
+		if err != nil {
+			continue
+		}
+		_ = os.Chmod(dir, 0777)
 		s.workPool <- dir
 	}
 	return s
@@ -52,7 +55,7 @@ func (s *DockerPoolSandbox) CompileAndRun(code, language string, testCases []ent
 	if err := os.WriteFile(filepath.Join(workDir, srcFile), []byte(code), 0644); err != nil {
 		return s.allError(results, entity.VerdictRE, "failed to write source file")
 	}
-	os.Chmod(filepath.Join(workDir, srcFile), 0644)
+	_ = os.Chmod(filepath.Join(workDir, srcFile), 0644)
 
 	if compileErr := s.compile(workDir, language); compileErr != "" {
 		return s.allError(results, entity.VerdictCE, compileErr)
@@ -73,9 +76,12 @@ func (s *DockerPoolSandbox) CompileAndRun(code, language string, testCases []ent
 }
 
 func (s *DockerPoolSandbox) cleanWorkDir(dir string) {
-	entries, _ := os.ReadDir(dir)
+	entries, err := os.ReadDir(dir)
+	if err != nil {
+		return
+	}
 	for _, e := range entries {
-		os.RemoveAll(filepath.Join(dir, e.Name()))
+		_ = os.RemoveAll(filepath.Join(dir, e.Name()))
 	}
 }
 
